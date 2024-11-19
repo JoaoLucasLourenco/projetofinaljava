@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>Individuos cadastrados</title>
+  <link rel="stylesheet" href="estilo.css" th:href="@{/estilo.css}">
+</head>
+<body>
+<div layout:fragment="conteudo" style="width:80%;">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+  <nav>
+    <ul class="LinksMenu">
+      <li><a href="/individuo/create">Cadastrar indivíduo</a></li>
+      <li><a href="/individuo/list">Lista de indivíduo</a></li>
+      <li><a href="/produto/create">Cadastrar Produto</a></li>
+      <li><a href="/produto/list">Lista de Produtos</a></li>
+    </ul>
+  </nav>
+  <h1>Lista de Indivíduos Cadastrados
+  </h1>
+  <form th:action="@{'/individuo/list'}" method="get">
+    <div>
+      <label for="CPF">Filtrar por CPF:</label>
+      <input id="CPF" name="CPF">
+    </div>
+    <script type="text/javascript">$("#CPF").mask("000.000.000-00");</script>
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+      <input type="submit" class="confirmar" value="Filtrar">
+    </div>
+  </form>
+  <h2 style="margin: 0 auto" th:if="${cpf != null}">
+    Filtrando pelo CPF:
+    <span style="color: #28A745" th:if="${cpf != null}"
+          th:text="${cpf}"></span>
+  </h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>Sexo</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="individuo : ${lista}">
+      <td th:text="${individuo.nome}"></td>
+      <td th:text="${individuo.CPF}"></td>
+      <td th:text="${individuo.sexo}"></td>
+      <td>
+        <form action="/individuo" method="post">
+          <a class="editar" th:href="@{/individuo/create?id={id}(id=${individuo.id})}">Editar</a>
+          <input type="hidden" name="_method" value="delete"/>
+          <input type="hidden" name="id" th:value="${individuo.id}"/>
+          <input class="excluir" type="submit" value="Excluir"/>
+        </form>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

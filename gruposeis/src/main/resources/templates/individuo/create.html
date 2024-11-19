@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar indivíduo</title>
+    <link rel="stylesheet" href="estilo.css" th:href="@{/estilo.css}">
+</head>
+<body>
+<div layout:fragment="conteudo">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+    <nav>
+        <ul class="LinksMenu">
+            <li><a href="/individuo/create">Cadastrar indivíduo</a></li>
+            <li><a href="/individuo/list">Lista de indivíduo</a></li>
+            <li><a href="/produto/create">Cadastrar Produto</a></li>
+            <li><a href="/produto/list">Lista de Produtos</a></li>
+        </ul>
+    </nav>
+    <h1>Cadastro de indivíduo</h1>
+    <form method="post" class="form-container" th:action="@{'/individuo/create'}">
+
+        <input type="hidden" name="_method" value="put" th:if="${individuo!=null}">
+        <input type="hidden" name="id" th:value="${individuo?.id}">
+
+
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input id="nome" name="nome" th:value="${individuo?.nome}" required>
+        </div>
+        <script type="text/javascript">$("#CPF").mask("000.000.000-00");</script>
+        <div class="form-group">
+            <label for="CPF">CPF:</label>
+            <input id="CPF" name="CPF" th:value="${individuo?.CPF}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="sexo">Sexo:</label>
+            <select id="sexo" name="sexo">
+                <option value="" disabled>Selecione um sexo</option>
+                <option value="M" >Masculino</option>
+                <option value="F" >Feminino</option>
+            </select>
+        </div>
+
+        <p style="color: #CC3F0C" th:if="${Erro==true}">O CPF digitado é inválido, tente novamente com um documento válido!</p>
+
+        <input class="confirmar" type="submit" value="Confirmar">
+    </form>
+</div>
+</body>
+</html>

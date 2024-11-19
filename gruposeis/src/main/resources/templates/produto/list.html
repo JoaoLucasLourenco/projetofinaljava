@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>Produtos cadastrados</title>
+  <link rel="stylesheet" href="estilo.css" th:href="@{/estilo.css}">
+</head>
+<body>
+<div layout:fragment="conteudo" style="width:80%;">
+  <nav>
+    <ul class="LinksMenu">
+      <li><a href="/individuo/create">Cadastrar indivíduo</a></li>
+      <li><a href="/individuo/list">Lista de indivíduo</a></li>
+      <li><a href="/produto/create">Cadastrar Produto</a></li>
+      <li><a href="/produto/list">Lista de Produtos</a></li>
+    </ul>
+  </nav>
+  <h1>Lista de Produtos Cadastrados
+  </h1>
+  <form th:action="@{'/produto/list'}" method="get">
+    <div>
+      <label for="classificacao">Filtrar por Classificação Química:</label>
+      <select id="classificacao" name="nomeClassificacao">
+        <option value="" >Selecione uma Classificação</option>
+        <option value="Organofosforado" >Organofosforado</option>
+        <option value="Organoclorado" >Organoclorado</option>
+        <option value="Carbamato" >Carbamato</option>
+        <option value="Glicina Substituída" >Glicina Substituída</option>
+        <option value="Piretróide" >Piretróide</option>
+        <option value="Neonicotinóide" >Neonicotinóide</option>
+      </select>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+      <input type="submit" class="confirmar" value="Filtrar">
+    </div>
+  </form>
+  <h2 style="margin: 0 auto" th:if="${nc != null}">
+    Filtrando pela classificação:
+    <span style="color: #28A745" th:if="${nc != null}"
+          th:text="${nc}"></span>
+  </h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Classificação</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="produto : ${lista}">
+      <td th:text="${produto.nome}"></td>
+      <td th:text="${produto.classificacao}"></td>
+      <td>
+        <form action="/produto" method="post">
+          <a class="editar" th:href="@{/produto/create?id={id}(id=${produto.id})}">Editar</a>
+          <input type="hidden" name="_method" value="delete"/>
+          <input type="hidden" name="id" th:value="${produto.id}"/>
+          <input class="excluir" type="submit" value="Excluir"/>
+        </form>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
